@@ -3,10 +3,6 @@ import subprocess
 import sys
 import re
 
-from perfetto.trace_processor import TraceProcessor
-
-
-
 
 def parse_power_rails():
     rails_data = []
@@ -29,42 +25,19 @@ def parse_power_rails():
                 index = int(find_string_pattern("index", lines[i + 1]))
                 energy = int(find_string_pattern("energy", lines[i + 3]))
                 rails_data[index]["energy_list"].append(energy)
+
+        rails_data_valid = []
         for i in rails_data:
+            if i["energy_list"]:
+                rails_data_valid.append(i)
+
+        for i in rails_data_valid:
             res = energy_delta(i["energy_list"])
             i["total_energy"] = res[0]
             i["delta_list"] = res[1]
             i["delta_list"].pop(0)
-    return rails_data
 
-def parsing_perfetto_version(process_name):
-    core_runtime_total = [0, 0, 0, 0, 0, 0, 0, 0]
-    core_avg_freq_total = [0, 0, 0, 0, 0, 0, 0, 0]
-    tp = TraceProcessor(trace='./out/out.proto')
-    ad_cpu_metrics = tp.metric(['android_cpu'])
-    line_list = []
-    with open("./out/cpu_metric.txt", 'w') as f:
-        print(ad_cpu_metrics, file=f)
-    with open("./out/cpu_metric.txt", 'r') as f:
-        lines = f.readlines()
-        for i in range(len(lines)):
-            if "process_info" in lines[i]:
-                if process_name in lines[i + 1]:
-                    for j in range(i+1, len(lines)):
-                        line_list.append(lines[j])
-                        if "process_info" in lines[j]:
-                            break
-                    break
-        idx_core1 = 0
-        idx_core2 = 0
-        for elt in line_list[-85:-2]:
-            if "runtime_ns" in elt:
-                core_runtime_total[idx_core1] = int(elt.split(" ")[-1])
-                idx_core1 += 1
-            if "avg_freq" in elt:
-                core_avg_freq_total[idx_core2] = int(elt.split(" ")[-1])
-                idx_core2 += 1
-    return core_runtime_total, core_avg_freq_total, parse_power_rails()
-
+    return rails_data_valid
 
 def energy_delta(list_energy):
     list_delta = []
@@ -131,6 +104,7 @@ def print_usage():
 def main(params):
     if len(params) == 0:
         print_usage()
+    """
     else :
         traceconv = subprocess.run(["./traceconv", "text", params[0], "out/out.txt"],
                                    text=True, capture_output=True)
@@ -138,6 +112,9 @@ def main(params):
         if traceconv_out.find('main') != -1:
             print(print_usage())
             sys.exit(0)
+    """
+    res = parse_power_rails()
+    print(res)
 
 
 
