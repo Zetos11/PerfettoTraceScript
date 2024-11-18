@@ -1,10 +1,11 @@
-import ADB
+import ast
+import subprocess
 import sys
 import re
-import PerfettoScan
-import Const as c
-import Strategy as s
-import ConversionParsing as cp
+
+from perfetto.trace_processor import TraceProcessor
+
+
 
 
 def parse_power_rails():
@@ -128,6 +129,15 @@ def print_usage():
 
 
 def main(params):
+    if len(params) == 0:
+        print_usage()
+    else :
+        traceconv = subprocess.run(["./traceconv", "text", params[0], "out/out.txt"],
+                                   text=True, capture_output=True)
+        traceconv_out = traceconv.stderr
+        if traceconv_out.find('main') != -1:
+            print(print_usage())
+            sys.exit(0)
 
 
 
