@@ -1,7 +1,41 @@
 import ast
+import csv
+import os
 import subprocess
 import sys
 import re
+
+
+def load_input_filename():
+    filenames = []
+    for root, _, files in os.walk('./in'):
+        for filename in files:
+            if filename.endswith('.perfetto-trace'):
+                file_path = os.path.join(root, filename)
+                filenames.append(file_path)
+    return filenames
+
+def trace_conversion(filename):
+    open('filename', 'w').close()
+    traceconv = subprocess.run(["./traceconv", "text", filename, "out/out.txt"],
+                               text=True, capture_output=True)
+    traceconv_out = traceconv.stderr
+    if traceconv_out.find('main') != -1:
+        print("conversion error")
+        sys.exit(0)
+    print("conversion success")
+
+
+def result_to_csv(power_rails):
+    line_elements = []
+    for elt in power_rails:
+        line_elements.append(elt["total_energy"])
+
+    with open('./out/out.csv', 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=' ',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(line_elements)
+
 
 
 def parse_power_rails():
@@ -21,6 +55,7 @@ def parse_power_rails():
                     else:
                         gpu = 1
                 rails_data.append(create_rail_entry(rail_name, index))
+                print(rail_name)
             if "energy_data" in lines[i]:
                 index = int(find_string_pattern("index", lines[i + 1]))
                 energy = int(find_string_pattern("energy", lines[i + 3]))
@@ -66,55 +101,21 @@ def create_rail_entry(name, index):
         "delta_list": []
     }
 
-
-def parsing_power_profile(power_profile):
-    speed_list = [[None], [None], [None]]
-    power_list = [[None], [None], [None]]
-    power_profile_list = power_profile.split("\n")
-    for elt in power_profile_list:
-        if "cpu.clusters.cores" in elt:
-            core_list = ast.literal_eval(elt.split("=")[1])
-        if "cpu.core_speeds" in elt:
-            temp_speed = elt.split("=")
-            idx = int(temp_speed[0][-1])
-            speed_list[idx] = ast.literal_eval(temp_speed[1])
-        if "cpu.core_power" in elt:
-            temp_power = elt.split("=")
-            idx = int(temp_power[0][-1])
-            power_list[idx] = ast.literal_eval(temp_power[1])
-    power_profile_data = create_cpu_core_entry(speed_list, power_list, core_list)
-    return power_profile_data
-
-
-def create_cpu_core_entry(speed, power, type):
-    power_data = []
-    for idx, elt in enumerate(type):
-        for i in range(int(elt)):
-            power_data.append({
-                "type": idx,
-                "speed": speed[idx],
-                "power": power[idx]
-            })
-    return power_data
-
 def print_usage():
     print("Usage: python3 main.py trace_path")
 
 
-def main(params):
-    if len(params) == 0:
-        print_usage()
-    """
-    else :
-        traceconv = subprocess.run(["./traceconv", "text", params[0], "out/out.txt"],
-                                   text=True, capture_output=True)
-        traceconv_out = traceconv.stderr
-        if traceconv_out.find('main') != -1:
-            print(print_usage())
-            sys.exit(0)
-    """
-    res = parse_power_rails()
-    print(res)
+def main(argv):
+    filenames = load_input_filename()
+
+    if len(filenames) == 0:
+        print("No trace file found")
+        sys.exit(0)
+
+    for elt in filenames:
+        trace_conversion(elt)
+        res = parse_power_rails()
+        result_to_csv(res)
 
 
 
