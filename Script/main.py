@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 import re
+import perfetto
 
 
 def load_input_filename():
@@ -26,21 +27,27 @@ def trace_conversion(filename):
     print("conversion success")
 
 
-def result_to_csv(power_rails):
-    line_elements = []
+def process_result(power_rails, other_data, value):
+    line_elements = ""
     for elt in power_rails:
-        line_elements.append(elt["total_energy"])
+        line_elements + elt["total_energy"] + ";"
 
+    for elt in other_data:
+        line_elements + elt + ";"
+
+def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=' ',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(line_elements)
+        spamwriter.writerow(data)
 
 
 
 def parse_power_rails():
     rails_data = []
     gpu = 0
+    gpu0 = []
+    gpu1 = []
     with open("out/out.txt", 'r') as f:
         lines = f.readlines()
         for i in range(len(lines)):
@@ -60,6 +67,14 @@ def parse_power_rails():
                 index = int(find_string_pattern("index", lines[i + 1]))
                 energy = int(find_string_pattern("energy", lines[i + 3]))
                 rails_data[index]["energy_list"].append(energy)
+            if "gpu_frequency" in lines[i]:
+                index = int(find_string_pattern("gpu_id", lines[i + 1]))
+                frequency = int(find_string_pattern("state", lines[i + 2]))
+                if index == 0:
+                    gpu0.append(frequency)
+                else:
+                    gpu1.append(frequency)
+
 
         rails_data_valid = []
         for i in rails_data:
@@ -102,11 +117,17 @@ def create_rail_entry(name, index):
     }
 
 def print_usage():
-    print("Usage: python3 main.py trace_path")
+    print("Usage: python3 main.py optionnal:integer")
 
 
 def main(argv):
     filenames = load_input_filename()
+
+    try :
+        value = int(argv[0])
+    except ValueError:
+        print_usage()
+        sys.exit(0)
 
     if len(filenames) == 0:
         print("No trace file found")
@@ -115,7 +136,9 @@ def main(argv):
     for elt in filenames:
         trace_conversion(elt)
         res = parse_power_rails()
-        result_to_csv(res)
+
+        data = process_result(res, other_data, value)
+        result_to_csv(data)
 
 
 
