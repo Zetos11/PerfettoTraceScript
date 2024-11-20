@@ -4,7 +4,7 @@ import os
 import subprocess
 import sys
 import re
-import perfetto
+from perfetto.trace_processor import TraceProcessor
 
 
 def load_input_filename():
@@ -14,6 +14,7 @@ def load_input_filename():
             if filename.endswith('.perfetto-trace'):
                 file_path = os.path.join(root, filename)
                 filenames.append(file_path)
+                print(file_path)
     return filenames
 
 def trace_conversion(filename):
@@ -27,13 +28,20 @@ def trace_conversion(filename):
     print("conversion success")
 
 
-def process_result(power_rails, other_data, value):
-    line_elements = ""
+def process_result(trace_name, power_rails, other_data, value):
+    line_elements = trace_name + ";"
     for elt in power_rails:
-        line_elements + elt["total_energy"] + ";"
+        size = len(elt["delta_list"])
+        percent = int(size / (100 / value))
+        print(percent)
+        if percent > 0:
+            line_elements = line_elements + str(sum(elt["delta_list"][0:percent])) + ";"
+        else:
+            line_elements = line_elements + str(sum(elt["delta_list"][size-percent:])) + ";"
 
     for elt in other_data:
-        line_elements + elt + ";"
+        line_elements = line_elements + elt + ";"
+
 
 def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
@@ -41,7 +49,33 @@ def result_to_csv(data):
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(data)
 
+def parsing_freq(trace):
+    freq_tab = {
+        "CPU0" : [],
+        "CPU1" : [],
+        "CPU2" : [],
+        "CPU3" : [],
+        "CPU4" : [],
+        "CPU5" : [],
+        "CPU6" : [],
+        "CPU7" : [],
+        "GPU0" : [],
+        "GPU1" : [],
+    }
+    core_runtime_total = [0, 0, 0, 0, 0, 0, 0, 0]
+    core_avg_freq_total = [0, 0, 0, 0, 0, 0, 0, 0]
+    tp = TraceProcessor(trace=trace)
+    ad_cpu_metrics = tp.metric(['android_cpu'])
+    ad_gpu_metrics = tp.metric(['android_gpu'])
+    ad_powrails_metrics = tp.metric(['android_powrails'])
 
+    print(ad_powrails_metrics)
+    with open("./out/cpu_metric.txt", 'w') as f:
+        print(ad_cpu_metrics, file=f)
+    with open("./out/cpu_metric.txt", 'r') as f:
+        lines = f.readlines()
+
+    return 0
 
 def parse_power_rails():
     rails_data = []
@@ -134,10 +168,10 @@ def main(argv):
         sys.exit(0)
 
     for elt in filenames:
-        trace_conversion(elt)
+        #trace_conversion(elt)
         res = parse_power_rails()
-
-        data = process_result(res, other_data, value)
+        other_data = parsing_freq(elt)
+        data = process_result(elt, res, other_data, value=100)
         result_to_csv(data)
 
 
