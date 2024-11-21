@@ -1,1338 +1,185 @@
-android_powrails {
-  power_rails {
-    name: "power.L21S_VDD2L_MEM_uws"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 26967399
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 26969103
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 26970698
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 26972733
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 26974587
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 26976438
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 26978299
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 26980159
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 26982004
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 26983729
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 26985727
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 26987649
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 26989492
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 26991438
-    }
-    avg_used_power_mw: 1.8590209573892198
+android_gpu {
+  processes {
+    name: "/apex/com.google.pixel.camera.hal/bin/hw/android.hardware.camera.provider@2.7-service-google"
+    mem_max: 2560000
+    mem_min: 2560000
+    mem_avg: 2560000
   }
-  power_rails {
-    name: "power.L2S_PLL_MIPI_UFS_uws"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 110899748
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 110923863
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 110937189
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 110952146
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 110969451
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 110986890
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 111004466
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 111019406
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 111033489
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 111046427
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 111065092
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 111082130
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 111114786
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 111151963
-    }
-    avg_used_power_mw: 19.504678679143144
+  processes {
+    name: "/system/bin/surfaceflinger"
+    mem_max: 260014080
+    mem_min: 111087616
+    mem_avg: 137141496
   }
-  power_rails {
-    name: "power.S12S_VDD_AUR_uws"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 33552401
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 33556196
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 33559569
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 33564101
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 33567677
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 33571646
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 33575676
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 33579679
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 33583705
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 33587544
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 33592551
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 33596983
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 33601072
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 33605256
-    }
-    avg_used_power_mw: 4.0874642332379549
+  processes {
+    name: "com.android.settings"
+    mem_max: 22876160
+    mem_min: 0
+    mem_avg: 2508562
   }
-  power_rails {
-    name: "power.S1S_VDD_CAM_uws"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 46124707
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 46142394
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 46149146
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 46155271
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 46160862
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 46170867
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 46176721
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 46182224
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 46188074
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 46193108
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 46200862
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 46208370
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 46228784
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 46250975
-    }
-    avg_used_power_mw: 9.764751372670327
+  processes {
+    name: "com.android.systemui"
+    mem_max: 88330240
+    mem_min: 29036544
+    mem_avg: 35569632
   }
-  power_rails {
-    name: "power.S8S_VDD_G3D_L2_uws"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 13980579
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 13988467
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 13990910
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 13992041
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 13993067
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 13996826
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 13998501
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 13999516
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 14000564
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 14001516
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 14002643
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 14004832
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 14014290
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 14024501
-    }
-    avg_used_power_mw: 3.396643724383265
+  processes {
+    name: "com.android.traceur"
+    mem_max: 79970304
+    mem_min: 15106048
+    mem_avg: 24098598
   }
-  power_rails {
-    name: "power.rails.aoc.logic"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 134028279
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 134038678
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 134049236
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 134066424
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 134082152
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 134098156
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 134114760
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 134131325
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 134147878
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 134162611
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 134180282
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 134196875
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 134212990
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 134229965
-    }
-    avg_used_power_mw: 15.59709225891269
+  processes {
+    name: "com.google.android.GoogleCamera"
+    mem_max: 33480704
+    mem_min: 33480704
+    mem_avg: 33480704
   }
-  power_rails {
-    name: "power.rails.ddr.a"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 28923144
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 28942970
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 28961157
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 28982628
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 29002596
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 29023193
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 29042701
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 29062118
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 29082117
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 29100314
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 29120773
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 29141504
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 29164195
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 29185751
-    }
-    avg_used_power_mw: 20.308328822210193
+  processes {
+    name: "com.google.android.apps.maps"
+    mem_max: 442368
+    mem_min: 442368
+    mem_avg: 442368
   }
-  power_rails {
-    name: "power.rails.ddr.c"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 322637156
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 322727567
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 322800353
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 322887115
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 322967456
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 323049951
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 323126626
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 323199577
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 323273330
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 323344388
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 323424557
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 323511333
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 323644990
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 323756737
-    }
-    avg_used_power_mw: 86.581161549764133
+  processes {
+    name: "com.google.android.apps.nexuslauncher"
+    mem_max: 111677440
+    mem_min: 32038912
+    mem_avg: 45706237
   }
-  power_rails {
-    name: "power.rails.display"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 1625614661
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 1626116969
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 1626590597
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 1627188569
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 1627726872
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 1628255014
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 1628796060
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 1629331010
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 1629860297
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 1630351160
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 1630936534
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 1631480634
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 1632458551
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 1633585038
-    }
-    avg_used_power_mw: 616.3774650065734
+  processes {
+    name: "com.google.android.gms"
+    mem_max: 442368
+    mem_min: 442368
+    mem_avg: 442368
   }
-  power_rails {
-    name: "power.rails.gps"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 6434998
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 6435413
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 6435803
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 6436302
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 6436754
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 6437199
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 6437650
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 6438107
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 6438560
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 6438978
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 6439471
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 6439932
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 6440378
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 6440835
-    }
-    avg_used_power_mw: 0.45139587038898771
+  processes {
+    name: "com.google.android.gms.persistent"
+    mem_max: 13160448
+    mem_min: 13037568
+    mem_avg: 13041925
   }
-  power_rails {
-    name: "power.rails.gpu"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 15530650
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 15542630
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 15544439
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 15545020
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 15545532
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 15549262
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 15550281
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 15550811
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 15551359
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 15551882
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 15552440
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 15553708
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 15592311
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 15621805
-    }
-    avg_used_power_mw: 7.0493387982367954
+  processes {
+    name: "com.greenspector.testconso"
+    mem_max: 83320832
+    mem_min: 0
+    mem_avg: 40584299
   }
-  power_rails {
-    name: "power.rails.wifi.bt"
-    energy_data {
-      timestamp_ms: 16070393
-      energy_uws: 196830839
-    }
-    energy_data {
-      timestamp_ms: 16071325
-      energy_uws: 196845933
-    }
-    energy_data {
-      timestamp_ms: 16072211
-      energy_uws: 196880059
-    }
-    energy_data {
-      timestamp_ms: 16073328
-      energy_uws: 196905425
-    }
-    energy_data {
-      timestamp_ms: 16074325
-      energy_uws: 196919664
-    }
-    energy_data {
-      timestamp_ms: 16075326
-      energy_uws: 196936214
-    }
-    energy_data {
-      timestamp_ms: 16076327
-      energy_uws: 196949276
-    }
-    energy_data {
-      timestamp_ms: 16077327
-      energy_uws: 196980142
-    }
-    energy_data {
-      timestamp_ms: 16078326
-      energy_uws: 196993784
-    }
-    energy_data {
-      timestamp_ms: 16079238
-      energy_uws: 197028123
-    }
-    energy_data {
-      timestamp_ms: 16080328
-      energy_uws: 197041336
-    }
-    energy_data {
-      timestamp_ms: 16081351
-      energy_uws: 197058168
-    }
-    energy_data {
-      timestamp_ms: 16082324
-      energy_uws: 197089172
-    }
-    energy_data {
-      timestamp_ms: 16083324
-      energy_uws: 197105203
-    }
-    avg_used_power_mw: 21.217539246771324
+  processes {
+    name: "system_server"
+    mem_max: 55488512
+    mem_min: 40058880
+    mem_avg: 50368483
   }
-  power_rails {
-    name: "power.L22M_DISP_uws"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 183117841
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 183167450
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 183211750
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 183265640
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 183312988
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 183363209
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 183410784
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 183458763
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 183506881
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 183550672
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 183602083
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 183650856
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 183702693
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 183756775
-    }
-    avg_used_power_mw: 49.4110277627407
-  }
-  power_rails {
-    name: "power.S6M_LLDO1_uws"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 468621549
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 468791338
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 468940753
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 469133427
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 469299691
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 469472307
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 469639749
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 469806325
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 469969437
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 470120505
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 470294050
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 470462675
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 470643409
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 470822462
-    }
-    avg_used_power_mw: 170.2043925450468
-  }
-  power_rails {
-    name: "power.S8M_LLDO2_uws"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 351496584
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 351528066
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 351557045
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 351597052
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 351629753
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 351663858
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 351698534
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 351732580
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 351765084
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 351795551
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 351831080
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 351866162
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 351901370
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 351936963
-    }
-    avg_used_power_mw: 34.056066816178173
-  }
-  power_rails {
-    name: "power.S9M_VDD_CPUCL0_M_uws"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 112457671
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 112479813
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 112498331
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 112521094
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 112541471
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 112561297
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 112580991
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 112601568
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 112621611
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 112640533
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 112662172
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 112684194
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 112709159
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 112733822
-    }
-    avg_used_power_mw: 21.355734281958085
-  }
-  power_rails {
-    name: "power.rails.cpu.big"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 1234708348
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 1237425267
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 1239969408
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 1243283194
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 1246194954
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 1249110097
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 1251988496
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 1254875863
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 1257783630
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 1260419139
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 1263484551
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 1266366212
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 1268996644
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 1271619974
-    }
-    avg_used_power_mw: 2854.5066893511716
-  }
-  power_rails {
-    name: "power.rails.cpu.little"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 509737325
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 510287840
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 510675392
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 511170651
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 511591107
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 512020878
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 512389520
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 512775924
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 513138926
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 513476122
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 513883985
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 514313681
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 514881456
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 515426371
-    }
-    avg_used_power_mw: 439.9540638775037
-  }
-  power_rails {
-    name: "power.rails.cpu.mid"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 211197416
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 211254386
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 211262756
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 211264912
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 211275153
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 211304060
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 211305277
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 211312509
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 211313507
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 211319616
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 211321619
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 211467828
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 211743995
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 211865320
-    }
-    avg_used_power_mw: 51.651380403681074
-  }
-  power_rails {
-    name: "power.rails.memory.interface"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 216508209
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 216769773
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 216996645
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 217252792
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 217497978
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 217759674
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 217999927
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 218234590
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 218487773
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 218717079
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 218952546
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 219191716
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 219457889
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 219734921
-    }
-    avg_used_power_mw: 249.53306008816023
-  }
-  power_rails {
-    name: "power.rails.modem"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 105654090
-    }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 105667234
-    }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 105668055
-    }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 105717778
-    }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 105718551
-    }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 105719517
-    }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 105755372
-    }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 105755919
-    }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 105782978
-    }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 105784347
-    }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 105785444
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 105799649
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 105820153
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 105841564
-    }
-    avg_used_power_mw: 14.498027994741319
-  }
-  power_rails {
-    name: "power.rails.radio.frontend"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 1659
+  mem_max: 476655616
+  mem_min: 307167232
+  mem_avg: 333288806
+  freq_metrics {
+    gpu_id: 0
+    freq_max: 900000
+    freq_min: 0
+    freq_avg: 39242.137967602343
+    used_freqs {
+      freq: 0
+      dur_ms: 19194.973172
+      percentage: 90.291948927609837
+    }
+    used_freqs {
+      freq: 160000
+      dur_ms: 477.313554
+      percentage: 2.2452529969195805
+    }
+    used_freqs {
+      freq: 386000
+      dur_ms: 736.583036
+      percentage: 3.4648403658344953
+    }
+    used_freqs {
+      freq: 430000
+      dur_ms: 250.968626
+      percentage: 1.1805406633378135
+    }
+    used_freqs {
+      freq: 531000
+      dur_ms: 342.018757
+      percentage: 1.6088347643213159
+    }
+    used_freqs {
+      freq: 659000
+      dur_ms: 102.576864
+      percentage: 0.48251512947946207
+    }
+    used_freqs {
+      freq: 749000
+      dur_ms: 148.975831
+      percentage: 0.70077295777218784
+    }
+    used_freqs {
+      freq: 900000
+      dur_ms: 5.377239
+      percentage: 0.025294194725303875
     }
   }
-  power_rails {
-    name: "power.rails.system.fabric"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 88171988
+  freq_metrics {
+    gpu_id: 1
+    freq_max: 723000
+    freq_min: 0
+    freq_avg: 30493.55373076801
+    used_freqs {
+      freq: 0
+      dur_ms: 19227.935332
+      percentage: 90.447202198677687
     }
-    energy_data {
-      timestamp_ms: 16071328
-      energy_uws: 88204605
+    used_freqs {
+      freq: 150000
+      dur_ms: 470.507163
+      percentage: 2.2132410876670408
     }
-    energy_data {
-      timestamp_ms: 16072215
-      energy_uws: 88232877
+    used_freqs {
+      freq: 302000
+      dur_ms: 722.430289
+      percentage: 3.3982742970269606
     }
-    energy_data {
-      timestamp_ms: 16073332
-      energy_uws: 88268929
+    used_freqs {
+      freq: 337000
+      dur_ms: 247.784499
+      percentage: 1.1655653243982447
     }
-    energy_data {
-      timestamp_ms: 16074329
-      energy_uws: 88300579
+    used_freqs {
+      freq: 376000
+      dur_ms: 112.053098
+      percentage: 0.5270919127196827
     }
-    energy_data {
-      timestamp_ms: 16075329
-      energy_uws: 88334843
+    used_freqs {
+      freq: 419000
+      dur_ms: 225.026405
+      percentage: 1.0585124404492945
     }
-    energy_data {
-      timestamp_ms: 16076331
-      energy_uws: 88367220
+    used_freqs {
+      freq: 467000
+      dur_ms: 61.296751
+      percentage: 0.2883367109412015
     }
-    energy_data {
-      timestamp_ms: 16077331
-      energy_uws: 88400974
+    used_freqs {
+      freq: 521000
+      dur_ms: 40.191896
+      percentage: 0.18906057678539653
     }
-    energy_data {
-      timestamp_ms: 16078330
-      energy_uws: 88433743
+    used_freqs {
+      freq: 580000
+      dur_ms: 126.244386
+      percentage: 0.59384698928058133
     }
-    energy_data {
-      timestamp_ms: 16079241
-      energy_uws: 88465711
+    used_freqs {
+      freq: 649000
+      dur_ms: 19.92395
+      percentage: 0.093721218796032943
     }
-    energy_data {
-      timestamp_ms: 16080331
-      energy_uws: 88502899
-    }
-    energy_data {
-      timestamp_ms: 16081355
-      energy_uws: 88539124
-    }
-    energy_data {
-      timestamp_ms: 16082327
-      energy_uws: 88582567
-    }
-    energy_data {
-      timestamp_ms: 16083329
-      energy_uws: 88625099
-    }
-    avg_used_power_mw: 35.040677441806508
-  }
-  power_rails {
-    name: "power.rails.tpu"
-    energy_data {
-      timestamp_ms: 16070398
-      energy_uws: 5850030
+    used_freqs {
+      freq: 723000
+      dur_ms: 5.345987
+      percentage: 0.02514724325787546
     }
   }
-  avg_total_used_power_mw: 4724.5791589363016
 }
 

@@ -2,6 +2,7 @@ import os
 import sys
 
 from perfetto.trace_processor import TraceProcessor
+from google.protobuf.json_format import MessageToDict
 
 
 def load_input_filename():
@@ -13,6 +14,26 @@ def load_input_filename():
                 filenames.append(file_path)
                 print(file_path)
     return filenames
+
+def create_rail_entry(name, energy_list):
+    return {
+        "rail": name,
+        "total_energy": 0,
+        "energy_list": energy_list,
+        "delta_list": []
+    }
+
+def energy_delta(list_energy):
+    list_delta = []
+    timestamps = len(list_energy)
+    start = list_energy[0]
+    end = list_energy[timestamps - 1]
+    j = start
+    for i in list_energy:
+        v = i - j
+        list_delta.append(v)  # convert from uWs to mWs
+        j = i
+    return end - start, list_delta
 
 def parse_file(filename):
     freq_tab = {
@@ -58,19 +79,24 @@ def parse_file(filename):
                         gpu1_freq = int(float(lines[i+4].split(":")[1][1:-2]))
                     gpu_idx += 1
 
-    print("gpu0 + gpu1= ", gpu0_freq, gpu1_freq, gpu_mem_avg)
-
 
     ad_power_rails_metrics = tp.metric(['android_powrails'])
-    print(ad_power_rails_metrics)
-    open('./out/tmp', 'w').close()
-    with open('./out/tmp', 'w') as f:
-        print(ad_power_rails_metrics, file=f)
-    with open('./out/tmp', 'r') as f:
-        lines = f.readlines()
+    rails_data = []
+    test = MessageToDict(ad_power_rails_metrics)
+    for elt in test['androidPowrails']['powerRails']:
+        list_energy = []
+        name = elt.get('name')
+        for i in elt['energyData']:
+            list_energy.append(i.get('energyUws'))
+        rails_data.append(create_rail_entry(name, list_energy))
+    for i in rails_data:
+        res = energy_delta(i["energy_list"])
+        i["total_energy"] = res[0]
+        i["delta_list"] = res[1]
+        i["delta_list"].pop(0)
 
 
-    #return power_rails, cpu_little_freq, cpu_medium_freq, cpu_big_freq, gpu0_freq, gpu1_freq, gpu_mem_avg
+    #return rails_data, cpu_little_freq, cpu_medium_freq, cpu_big_freq, gpu0_freq, gpu1_freq, gpu_mem_avg
 
 def main(args):
     filenames = load_input_filename()
