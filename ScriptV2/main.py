@@ -14,7 +14,6 @@ def load_input_filename():
             if filename.endswith('.perfetto-trace'):
                 file_path = os.path.join(root, filename)
                 filenames.append(file_path)
-                print(file_path)
     return filenames
 
 def create_rail_entry(name, energy_list):
@@ -62,9 +61,6 @@ def parse_file(filename):
         "Big" : []
     }
 
-    cpu_little_freq = 0
-    cpu_medium_freq = 0
-    cpu_big_freq = 0
     gpu0_freq = 0
     gpu1_freq = 0
     gpu_mem_avg = 0
@@ -124,13 +120,13 @@ def parse_file(filename):
     cpu_medium_freq = res[1]
     cpu_big_freq = res[2]
 
-    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg #Rounded for comprehsion
+    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg #Rounded for comprehension
 
 def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ;GPU_MEM_AVG').split(';'))
+        spamwriter.writerow(('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;INFRASTRUCTURE;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ;GPU_MEM_AVG').split(';'))
         for elt in data:
             print(elt)
             spamwriter.writerow(elt)
