@@ -1,6 +1,7 @@
+import csv
 import os
 import sys
-from typing import re
+import re
 
 from perfetto.trace_processor import TraceProcessor
 from google.protobuf.json_format import MessageToDict
@@ -129,21 +130,28 @@ def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=' ',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(data)
+        spamwriter.writerow('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ')
+        for elt in data:
+            spamwriter.writerow(elt)
+
 
 def process_result(trace_name, data, power_rails_slice):
     line_elements = trace_name + ";"
+    pattern = r"^\[(\d+):(\d+)\]$"
+    match = re.match(pattern, power_rails_slice)
+    x, y = map(int, match.groups())
     for elt in data[0]:
+        if x == 0 and y == 100:
+            line_elements = line_elements + str(elt["total_energy"]) + ";"
         size = len(elt["delta_list"])
-        percent = int(size / (100 / value))
-        print(percent)
-        if percent > 0:
-            line_elements = line_elements + str(sum(elt["delta_list"][0:percent])) + ";"
-        else:
-            line_elements = line_elements + str(sum(elt["delta_list"][size - percent:])) + ";"
+        start = int((x/100) * size)
+        end = int((y/100) * size)
+        line_elements = line_elements + str(sum(elt["delta_list"][start:end])) + ";"
 
     for elt in data:
         line_elements = line_elements + elt + ";"
+    print(line_elements)
+    return line_elements
 
 def slice_validation(value):
     res = False
@@ -152,7 +160,7 @@ def slice_validation(value):
     if match:
         res =  True
     x, y = map(int, match.groups())
-    if not (0 < x < 100 and 0 < y < 100 and x < y):
+    if not (0 <= x < 100 and 0 < y <= 100 and x < y):
             res =  False
             print('slice format : [x:y] with 0 < x < 100 and 0 < y < 100 and x < y')
     return res
@@ -160,7 +168,7 @@ def slice_validation(value):
 
 def main(args):
     if not slice_validation(args[0]):
-        print("Usage: python3 main.py slice (format : [0-100]")
+        print("Usage: python3 main.py slice (format : [0:100])")
         sys.exit(0)
 
     filenames = load_input_filename()
@@ -169,10 +177,11 @@ def main(args):
         print("No trace file found")
         sys.exit(0)
 
+    open('./out/out.csv', 'w').close()
     data = []
 
     for elt in filenames:
-        formatted_data = process_result(elt.split('/'[2]), parse_file(elt), args[0])
+        formatted_data = process_result(elt.split('/')[2], parse_file(elt), args[0])
         data.append(formatted_data)
 
     result_to_csv(data)
