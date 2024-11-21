@@ -7,15 +7,27 @@ android_gpu {
   }
   processes {
     name: "/system/bin/surfaceflinger"
-    mem_max: 166907904
-    mem_min: 113713152
-    mem_avg: 123553653
+    mem_max: 260014080
+    mem_min: 111087616
+    mem_avg: 137141496
+  }
+  processes {
+    name: "com.android.settings"
+    mem_max: 22876160
+    mem_min: 0
+    mem_avg: 2508562
   }
   processes {
     name: "com.android.systemui"
-    mem_max: 93716480
-    mem_min: 31473664
-    mem_avg: 42363732
+    mem_max: 88330240
+    mem_min: 29036544
+    mem_avg: 35569632
+  }
+  processes {
+    name: "com.android.traceur"
+    mem_max: 79970304
+    mem_min: 15106048
+    mem_avg: 24098598
   }
   processes {
     name: "com.google.android.GoogleCamera"
@@ -31,9 +43,9 @@ android_gpu {
   }
   processes {
     name: "com.google.android.apps.nexuslauncher"
-    mem_max: 60870656
-    mem_min: 60870656
-    mem_avg: 60870656
+    mem_max: 111677440
+    mem_min: 32038912
+    mem_avg: 45706237
   }
   processes {
     name: "com.google.android.gms"
@@ -43,103 +55,130 @@ android_gpu {
   }
   processes {
     name: "com.google.android.gms.persistent"
-    mem_max: 12976128
-    mem_min: 12853248
-    mem_avg: 12869837
-  }
-  processes {
-    name: "com.google.android.gms.unstable"
-    mem_max: 581632
-    mem_min: 581632
-    mem_avg: 581632
-  }
-  processes {
-    name: "com.google.android.inputmethod.latin"
-    mem_max: 20570112
-    mem_min: 20570112
-    mem_avg: 20570112
-  }
-  processes {
-    name: "com.greenspector.testbench.launcher.android"
-    mem_max: 56152064
-    mem_min: 0
-    mem_avg: 45656279
+    mem_max: 13160448
+    mem_min: 13037568
+    mem_avg: 13041925
   }
   processes {
     name: "com.greenspector.testconso"
-    mem_max: 27447296
-    mem_min: 27447296
-    mem_avg: 27447296
+    mem_max: 83320832
+    mem_min: 0
+    mem_avg: 40584299
   }
   processes {
     name: "system_server"
-    mem_max: 57602048
-    mem_min: 57602048
-    mem_avg: 57602048
+    mem_max: 55488512
+    mem_min: 40058880
+    mem_avg: 50368483
   }
-  mem_max: 444346368
-  mem_min: 359301120
-  mem_avg: 394759391
+  mem_max: 476655616
+  mem_min: 307167232
+  mem_avg: 333288806
   freq_metrics {
     gpu_id: 0
-    freq_max: 531000
+    freq_max: 900000
     freq_min: 0
-    freq_avg: 15618.147945363738
+    freq_avg: 39242.137967602343
     used_freqs {
       freq: 0
-      dur_ms: 12875.940764
-      percentage: 92.922562873369571
+      dur_ms: 19194.973172
+      percentage: 90.291948927609837
     }
     used_freqs {
       freq: 160000
-      dur_ms: 741.05501
-      percentage: 5.3480154981668662
+      dur_ms: 477.313554
+      percentage: 2.2452529969195805
     }
     used_freqs {
       freq: 386000
-      dur_ms: 185.524659
-      percentage: 1.3388867739037658
+      dur_ms: 736.583036
+      percentage: 3.4648403658344953
     }
     used_freqs {
       freq: 430000
-      dur_ms: 24.766318
-      percentage: 0.17873255117258977
+      dur_ms: 250.968626
+      percentage: 1.1805406633378135
     }
     used_freqs {
       freq: 531000
-      dur_ms: 29.348673
-      percentage: 0.21180230338720932
+      dur_ms: 342.018757
+      percentage: 1.6088347643213159
+    }
+    used_freqs {
+      freq: 659000
+      dur_ms: 102.576864
+      percentage: 0.48251512947946207
+    }
+    used_freqs {
+      freq: 749000
+      dur_ms: 148.975831
+      percentage: 0.70077295777218784
+    }
+    used_freqs {
+      freq: 900000
+      dur_ms: 5.377239
+      percentage: 0.025294194725303875
     }
   }
   freq_metrics {
     gpu_id: 1
-    freq_max: 376000
+    freq_max: 723000
     freq_min: 0
-    freq_avg: 13267.266608913133
+    freq_avg: 30493.55373076801
     used_freqs {
       freq: 0
-      dur_ms: 12889.532795
-      percentage: 93.0210783206468
+      dur_ms: 19227.935332
+      percentage: 90.447202198677687
     }
     used_freqs {
       freq: 150000
-      dur_ms: 731.584929
-      percentage: 5.2796963288779795
+      dur_ms: 470.507163
+      percentage: 2.2132410876670408
     }
     used_freqs {
       freq: 302000
-      dur_ms: 182.15088
-      percentage: 1.3145450299973216
+      dur_ms: 722.430289
+      percentage: 3.3982742970269606
     }
     used_freqs {
       freq: 337000
-      dur_ms: 24.374023
-      percentage: 0.1759022563914619
+      dur_ms: 247.784499
+      percentage: 1.1655653243982447
     }
     used_freqs {
       freq: 376000
-      dur_ms: 28.929483
-      percentage: 0.20877806408644309
+      dur_ms: 112.053098
+      percentage: 0.5270919127196827
+    }
+    used_freqs {
+      freq: 419000
+      dur_ms: 225.026405
+      percentage: 1.0585124404492945
+    }
+    used_freqs {
+      freq: 467000
+      dur_ms: 61.296751
+      percentage: 0.2883367109412015
+    }
+    used_freqs {
+      freq: 521000
+      dur_ms: 40.191896
+      percentage: 0.18906057678539653
+    }
+    used_freqs {
+      freq: 580000
+      dur_ms: 126.244386
+      percentage: 0.59384698928058133
+    }
+    used_freqs {
+      freq: 649000
+      dur_ms: 19.92395
+      percentage: 0.093721218796032943
+    }
+    used_freqs {
+      freq: 723000
+      dur_ms: 5.345987
+      percentage: 0.02514724325787546
     }
   }
 }

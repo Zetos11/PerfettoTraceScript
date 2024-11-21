@@ -128,28 +128,30 @@ def parse_file(filename):
 
 def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=' ',
+        spamwriter = csv.writer(csvfile, delimiter=';',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ')
+        spamwriter.writerow(('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ;GPU_MEM_AVG').split(';'))
         for elt in data:
+            print(elt)
             spamwriter.writerow(elt)
 
 
 def process_result(trace_name, data, power_rails_slice):
-    line_elements = trace_name + ";"
+    line_elements = [trace_name]
     pattern = r"^\[(\d+):(\d+)\]$"
     match = re.match(pattern, power_rails_slice)
     x, y = map(int, match.groups())
     for elt in data[0]:
         if x == 0 and y == 100:
-            line_elements = line_elements + str(elt["total_energy"]) + ";"
-        size = len(elt["delta_list"])
-        start = int((x/100) * size)
-        end = int((y/100) * size)
-        line_elements = line_elements + str(sum(elt["delta_list"][start:end])) + ";"
+            line_elements.append(str(elt["total_energy"]))
+        else:
+            size = len(elt["delta_list"])
+            start = int((x/100) * size)
+            end = int((y/100) * size)
+            line_elements.append(str(sum(elt["delta_list"][start:end])))
 
-    for elt in data:
-        line_elements = line_elements + elt + ";"
+    for elt in data[1:]:
+        line_elements.append(str(elt))
     print(line_elements)
     return line_elements
 
@@ -168,7 +170,7 @@ def slice_validation(value):
 
 def main(args):
     if not slice_validation(args[0]):
-        print("Usage: python3 main.py slice (format : [0:100])")
+        print("Usage: python3 main.py power_rails_slice (format : [0:100])")
         sys.exit(0)
 
     filenames = load_input_filename()
