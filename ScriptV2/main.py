@@ -126,7 +126,39 @@ def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow(('Trace;L21S_VDD2L_MEM;UFS(Disk);S12S_VDD_AUR;Camera;GPU3D;Sensor;Memory;Memory;Display;GPS;GPU;WLANBT;L22M_DISP;S6M_LLDO1;S8M_LLDO2;S9M_VDD_CPUCL0_M;CPU_BIG_ENERGY;CPU_LITTLE_ENERGY;CPU_MID_ENERGY;INFRASTRUCTURE;CELLULAR;CELLULAR;INFRASTRUCTURE;TPU;CPU_LITTLE_FREQ;CPU_MID_FREQ;CPU_BIG_FREQ;GPU0_FREQ;GPU_1FREQ;GPU_MEM_AVG').split(';'))
+        spamwriter.writerow((
+                                'Trace;'
+                             'L21S_VDD2L_MEM_ENERGY;'
+                             'UFS(Disk)_ENERGY;'
+                             'S12S_VDD_AUR_ENERGY;'
+                             'Camera_ENERGY;'
+                             'GPU3D_ENERGY;'
+                             'Sensor_ENERGY;'
+                             'Memory_ENERGY;'
+                             'Memory_ENERGY;'
+                             'Display_ENERGY;'
+                             'GPS_ENERGY;'
+                             'GPU_ENERGY;'
+                             'WLANBT_ENERGY;'
+                             'L22M_DISP_ENERGY;'
+                             'S6M_LLDO1_ENERGY;'
+                             'S8M_LLDO2_ENERGY;'
+                             'S9M_VDD_CPUCL0_M_ENERGY;'
+                             'CPU_BIG_ENERGY;'
+                             'CPU_LITTLE_ENERGY;'
+                             'CPU_MID_ENERGY;'
+                             'INFRASTRUCTURE_ENERGY;'
+                             'CELLULAR_ENERGY;'
+                             'CELLULAR_ENERGY;'
+                             'INFRASTRUCTURE_ENERGY;'
+                             'TPU_ENERGY;'
+                             'CPU_LITTLE_FREQ;'
+                             'CPU_MID_FREQ;'
+                             'CPU_BIG_FREQ;'
+                             'GPU0_FREQ;'
+                             'GPU_1FREQ;'
+                             'GPU_MEM_AVG'
+                             ).split(';'))
         for elt in data:
             print(elt)
             spamwriter.writerow(elt)
@@ -179,7 +211,7 @@ def main(args):
     data = []
 
     for elt in filenames:
-        formatted_data = process_result(elt.split('/')[2], parse_file(elt), args[0])
+        formatted_data = process_result(elt.split('/')[2][:-15], parse_file(elt), args[0])
         data.append(formatted_data)
 
     result_to_csv(data)
