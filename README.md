@@ -2,6 +2,7 @@
 
 Can be used to extract specific data from a perfetto trace file.
 
+The most recent version, ScriptV2, uses the perfetto python API to extract the data from the trace.
 ScriptV2 is way more compact and efficient than the previous version and should always be used.
 
 **ScriptV1 is deprecated and is just here for references.**
@@ -15,6 +16,11 @@ So far the metrics tracked are :
 - Frequency of the second GPU
 - Average GPU memory frequency
 - Battery discharge
+
+Traces have to be inside the *in* folder and the output will be inside the *out* folder, in the out.csv file.
+Supported traces format are :
+- perfetto-trace
+- proto
 
 Usage : 
 ```bash
@@ -31,5 +37,11 @@ The slice format is as follows
 ```
 Where x is the start of the slice and y is the end of the slice.
 With x and y being integers and 0 <= x < y <= 100.
+
+References :
+- [Perfetto](https://perfetto.dev/)
+- [Perfetto Python API](https://perfetto.dev/docs/analysis/trace-processor-python)
+- [Protobuf](https://protobuf.dev/getting-started/pythontutorial/)
+- [Android Metrics](https://cs.android.com/android/platform/superproject/main/+/main:external/perfetto/protos/perfetto/metrics/metrics.proto;l=163?q=powrails&sq=&ss=android%2Fplatform%2Fsuperproject%2Fmain&hl=fr)
 
 
