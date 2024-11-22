@@ -159,13 +159,25 @@ def parse_file(filename):
     ad_cpu_metrics = tp.metric(['android_cpu'])
     cpu_dict = MessageToDict(ad_cpu_metrics)
     for elt in cpu_dict['androidCpu']['processInfo']:
-        for ct in elt['coreType']:
-            if ct['type'] == 'little':
-                freq_tab["Little"].append([ct['metrics']['avgFreqKhz'], ct['metrics']['runtimeNs']])
-            if ct['type'] == 'big':
-                freq_tab["Medium"].append([ct['metrics']['avgFreqKhz'], ct['metrics']['runtimeNs']])
-            if ct['type'] == 'bigger':
-                freq_tab["Big"].append([ct['metrics']['avgFreqKhz'], ct['metrics']['runtimeNs']])
+        for ct in elt.get('coreType', []):
+            core_type = ct.get('type')
+            metrics = ct.get('metrics', {})
+
+            if core_type == 'little':
+                freq_tab["Little"].append([
+                    metrics.get('avgFreqKhz', 0),
+                    metrics.get('runtimeNs', 0)
+                ])
+            elif core_type == 'big':
+                freq_tab["Medium"].append([
+                    metrics.get('avgFreqKhz', 0),
+                    metrics.get('runtimeNs', 0)
+                ])
+            elif core_type == 'bigger':
+                freq_tab["Big"].append([
+                    metrics.get('avgFreqKhz', 0),
+                    metrics.get('runtimeNs', 0)
+                ])
 
     # Calculate average cpu frequency
     res =  cpu_freq_compilation(freq_tab)
