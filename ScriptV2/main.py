@@ -32,12 +32,15 @@ Parameters:
 Returns:
     Dictionary for the power rail
 """
-def create_rail_entry(name, energy_list):
+def create_rail_entry(name, energy_list, time_list):
     return {
         "rail": name,
         "total_energy": 0,
+        "total_time_ms": 0,
         "energy_list": energy_list,
-        "delta_list": []
+        "time_list": time_list,
+        "delta_list": [],
+        "delta_time": []
     }
 
 """
@@ -79,17 +82,22 @@ Returns:
     end - start : Give total energy consumption
     list_delta : List of energy deltas
 """
-def energy_delta(list_energy):
+def energy_delta(list_energy, list_time):
     list_delta = []
-    timestamps = len(list_energy)
-    start = list_energy[0]
-    end = list_energy[timestamps - 1]
-    j = start
+    delta_time = []
+    size = len(list_energy)
+    start_energy = list_energy[0]
+    end_energy = list_energy[size - 1]
+    j = start_energy
     for i in list_energy:
         v = i - j
-        list_delta.append(v)  # convert from uWs to mWs
+        list_delta.append(v)
         j = i
-    return end - start, list_delta
+
+    for i in range(size - 1):
+        delta_time.append(int(list_time[i+1]) - int(list_time[i]))
+
+    return end_energy - start_energy, list_delta, delta_time, int(list_time[-1]) - int(list_time[0])
 
 """
 parse_file : Parse the trace file and extract the relevant data
@@ -141,17 +149,21 @@ def parse_file(filename):
     # Parse power rails
     ad_power_rails_metrics = tp.metric(['android_powrails'])
     rails_data = []
-    gpu_dict = MessageToDict(ad_power_rails_metrics)
-    for elt in gpu_dict['androidPowrails']['powerRails']:
+    rails_dict = MessageToDict(ad_power_rails_metrics)
+    for elt in rails_dict['androidPowrails']['powerRails']:
         list_energy = []
+        list_time = []
         name = elt.get('name')
         for i in elt['energyData']:
             list_energy.append(i.get('energyUws'))
-        rails_data.append(create_rail_entry(name, list_energy))
+            list_time.append(i.get('timestampMs'))
+        rails_data.append(create_rail_entry(name, list_energy, list_time))
     for i in rails_data:
-        res = energy_delta(i["energy_list"])
+        res = energy_delta(i["energy_list"], i["time_list"])
         i["total_energy"] = res[0]
         i["delta_list"] = res[1]
+        i["delta_time"] = res[2]
+        i["total_time_ms"] = res[3]
         i["delta_list"].pop(0)
 
 
@@ -193,7 +205,7 @@ def parse_file(filename):
     battery_discharge = battery_end - battery_start
 
     # Parse mem metrics
-    ad_netperf_metrics = tp.metric(['android_netperf'])
+    ad_netperf_metrics = tp.metric(['android_io'])
 
 
     return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge #Rounded for comprehension
@@ -210,30 +222,30 @@ def result_to_csv(data):
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow((
                                 'Trace;'
-                             'L21S_VDD2L_MEM_ENERGY;'
-                             'UFS(Disk)_ENERGY;'
-                             'S12S_VDD_AUR_ENERGY;'
-                             'Camera_ENERGY;'
-                             'GPU3D_ENERGY;'
-                             'Sensor_ENERGY;'
-                             'Memory_ENERGY;'
-                             'Memory_ENERGY;'
-                             'Display_ENERGY;'
-                             'GPS_ENERGY;'
-                             'GPU_ENERGY;'
-                             'WLANBT_ENERGY;'
-                             'L22M_DISP_ENERGY;'
-                             'S6M_LLDO1_ENERGY;'
-                             'S8M_LLDO2_ENERGY;'
-                             'S9M_VDD_CPUCL0_M_ENERGY;'
-                             'CPU_BIG_ENERGY;'
-                             'CPU_LITTLE_ENERGY;'
-                             'CPU_MID_ENERGY;'
-                             'INFRASTRUCTURE_ENERGY;'
-                             'CELLULAR_ENERGY;'
-                             'CELLULAR_ENERGY;'
-                             'INFRASTRUCTURE_ENERGY;'
-                             'TPU_ENERGY;'
+                             'L21S_VDD2L_MEM_ENERGY_AVG;'
+                             'UFS(Disk)_ENERGY_AVG;'
+                             'S12S_VDD_AUR_ENERGY_AVG;'
+                             'Camera_ENERGY_AVG;'
+                             'GPU3D_ENERGY_AVG;'
+                             'Sensor_ENERGY_AVG;'
+                             'Memory_ENERGY_AVG;'
+                             'Memory_ENERGY_AVG;'
+                             'Display_ENERGY_AVG;'
+                             'GPS_ENERGY_AVG;'
+                             'GPU_ENERGY_AVG;'
+                             'WLANBT_ENERGY_AVG;'
+                             'L22M_DISP_ENERGY_AVG;'
+                             'S6M_LLDO1_ENERGY_AVG;'
+                             'S8M_LLDO2_ENERGY_AVG;'
+                             'S9M_VDD_CPUCL0_M_ENERGY_AVG;'
+                             'CPU_BIG_ENERGY_AVG;'
+                             'CPU_LITTLE_ENERGY_AVG;'
+                             'CPU_MID_ENERGY_AVG;'
+                             'INFRASTRUCTURE_ENERGY_AVG;'
+                             'CELLULAR_ENERGY_AVG;'
+                             'CELLULAR_ENERGY_AVG;'
+                             'INFRASTRUCTURE_ENERGY_AVG;'
+                             'TPU_ENERGY_AVG;'
                              'CPU_LITTLE_FREQ;'
                              'CPU_MID_FREQ;'
                              'CPU_BIG_FREQ;'
@@ -243,7 +255,6 @@ def result_to_csv(data):
                              'BATTERY_DISCHARGE'
                              ).split(';'))
         for elt in data:
-            print(elt)
             spamwriter.writerow(elt)
 
 """
@@ -262,14 +273,21 @@ def process_result(trace_name, data, power_rails_slice):
     pattern = r"^\[(\d+):(\d+)\]$"
     match = re.match(pattern, power_rails_slice)
     x, y = map(int, match.groups())
+
     for elt in data[0]:
-        if x == 0 and y == 100:
-            line_elements.append(str(elt["total_energy"]))
-        else:
-            size = len(elt["delta_list"])
-            start = int((x/100) * size)
-            end = int((y/100) * size)
-            line_elements.append(str(sum(elt["delta_list"][start:end])))
+        num = 0
+        den = 0
+        size = len(elt["delta_list"])
+        start = int((x / 100) * size)
+        end = int((y / 100) * size)
+        print(elt)
+        for i in range(start, end-1):
+            num += int(elt["delta_list"][i]) * int(elt["delta_time"][i])
+            den += int(elt["delta_time"][i])
+        if not den == 0:
+            line_elements.append(str(num/den))
+        else :
+            line_elements.append("0")
 
     for elt in data[1:]:
         line_elements.append(str(elt))
