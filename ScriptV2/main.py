@@ -8,7 +8,10 @@ from perfetto.trace_processor import TraceProcessor
 from google.protobuf.json_format import MessageToDict
 
 """
+load_input_filename : Load all the trace files in the in directory
 
+Returns:
+    filenames : List of all the trace files
 """
 def load_input_filename():
     filenames = []
@@ -19,6 +22,16 @@ def load_input_filename():
                 filenames.append(file_path)
     return filenames
 
+"""
+create_rail_entry : Create a dictionary for a power rail
+
+Parameters:
+    name : Name of the power rail
+    energy_list : List of energy values
+    
+Returns:
+    Dictionary for the power rail
+"""
 def create_rail_entry(name, energy_list):
     return {
         "rail": name,
@@ -27,6 +40,17 @@ def create_rail_entry(name, energy_list):
         "delta_list": []
     }
 
+"""
+cpu_freq_compilation : Calculate the average frequency for each CPU group
+
+Parameters:
+    freq_tab : Dictionary containing the frequency data for each CPU group
+    
+Returns:
+    little : Average frequency for the little CPU group
+    medium : Average frequency for the medium CPU group (big in the trace)
+    big : Average frequency for the big CPU group (bigger in the trace)
+"""
 def cpu_freq_compilation(freq_tab):
     little = 0
     medium = 0
@@ -45,6 +69,16 @@ def cpu_freq_compilation(freq_tab):
             big = num / den
     return little, medium, big
 
+"""
+energy_delta : Calculate the energy delta for a power rail
+
+Parameters:
+    list_energy : List of energy values
+    
+Returns:
+    end - start : Give total energy consumption
+    list_delta : List of energy deltas
+"""
 def energy_delta(list_energy):
     list_delta = []
     timestamps = len(list_energy)
@@ -57,6 +91,22 @@ def energy_delta(list_energy):
         j = i
     return end - start, list_delta
 
+"""
+parse_file : Parse the trace file and extract the relevant data
+
+Parameters:
+    filename : Name of the trace file
+    
+Returns:
+    rails_data : List of power rail data
+    cpu_little_freq : Average frequency for the little CPU group
+    cpu_medium_freq : Average frequency for the medium CPU group (big in the trace)
+    cpu_big_freq : Average frequency for the big CPU group (bigger in the trace)
+    gpu0_freq : Frequency of the first GPU
+    gpu1_freq : Frequency of the second GPU
+    gpu_mem_avg : Average GPU memory frequency
+    battery_discharge : Battery discharge
+"""
 def parse_file(filename):
     freq_tab = {
         "Little" : [],
@@ -136,6 +186,12 @@ def parse_file(filename):
 
     return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge #Rounded for comprehension
 
+"""
+result_to_csv : Write the data to a CSV file
+
+Parameters:
+    data : List of data to write to the CSV file
+"""
 def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';',
@@ -178,7 +234,17 @@ def result_to_csv(data):
             print(elt)
             spamwriter.writerow(elt)
 
+"""
+process_result : Prepare the result to be written to the CSV file
 
+Parameters:
+    trace_name : Name of the trace
+    data : List of data to write to the CSV file
+    power_rails_slice : Slice of the power rails to consider given in the main   
+    
+Returns:
+    line_elements : List of elements to write to the CSV file
+"""
 def process_result(trace_name, data, power_rails_slice):
     line_elements = [trace_name]
     pattern = r"^\[(\d+):(\d+)\]$"
@@ -197,6 +263,15 @@ def process_result(trace_name, data, power_rails_slice):
         line_elements.append(str(elt))
     return line_elements
 
+"""
+slice_validation : Validate the slice format
+
+Parameters:
+    value : Slice to validate
+    
+Returns:
+    res : True if the slice is valid, False otherwise
+"""
 def slice_validation(value):
     res = False
     pattern = r"^\[(\d+):(\d+)\]$" # [0:100]
