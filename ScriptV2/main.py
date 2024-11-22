@@ -1,3 +1,4 @@
+# Noé Chachignot, INRIA, 2024
 import csv
 import os
 import sys
@@ -6,7 +7,9 @@ import re
 from perfetto.trace_processor import TraceProcessor
 from google.protobuf.json_format import MessageToDict
 
+"""
 
+"""
 def load_input_filename():
     filenames = []
     for root, _, files in os.walk('./in'):
@@ -120,7 +123,18 @@ def parse_file(filename):
     cpu_medium_freq = res[1]
     cpu_big_freq = res[2]
 
-    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg #Rounded for comprehension
+    # Parse Battery metrics
+    ad_battery_metrics = tp.metric(['android_batt'])
+    battery_dict = MessageToDict(ad_battery_metrics)
+    battery_start = battery_dict['androidBatt']['batteryCounters'][0]['chargeCounterUah']
+    battery_end = battery_dict['androidBatt']['batteryCounters'][-1]['chargeCounterUah']
+    battery_discharge = battery_end - battery_start
+
+    # Parse mem metrics
+    ad_netperf_metrics = tp.metric(['android_netperf'])
+
+
+    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge #Rounded for comprehension
 
 def result_to_csv(data):
     with open('./out/out.csv', 'a', newline='') as csvfile:
@@ -157,7 +171,8 @@ def result_to_csv(data):
                              'CPU_BIG_FREQ;'
                              'GPU0_FREQ;'
                              'GPU_1FREQ;'
-                             'GPU_MEM_AVG'
+                             'GPU_MEM_AVG;'
+                             'BATTERY_DISCHARGE'
                              ).split(';'))
         for elt in data:
             print(elt)
@@ -180,7 +195,6 @@ def process_result(trace_name, data, power_rails_slice):
 
     for elt in data[1:]:
         line_elements.append(str(elt))
-    print(line_elements)
     return line_elements
 
 def slice_validation(value):
@@ -211,7 +225,7 @@ def main(args):
     data = []
 
     for elt in filenames:
-        formatted_data = process_result(elt.split('/')[2][:-15], parse_file(elt), args[0])
+        formatted_data = process_result(re.split(r' |/|\\',elt)[2][:-15], parse_file(elt), args[0])
         data.append(formatted_data)
 
     result_to_csv(data)
