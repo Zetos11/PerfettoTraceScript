@@ -99,6 +99,39 @@ def energy_delta(list_energy, list_time):
 
     return end_energy - start_energy, list_delta, delta_time, int(list_time[-1]) - int(list_time[0])
 
+
+def average_discharge_rate(battery_data):
+    """
+    average_discharge_rate : Calculate the average discharge rate of the battery per second
+
+    Parameters:
+        battery_data : Battery data
+
+    Returns:
+        avg_discharge_rate : Average discharge rate of the battery per second
+    """
+    list_current_ua = []
+    deltas = []
+    battery_counters = battery_data.get("batteryCounters", [])
+    for i in range(1, len(battery_counters)):
+        prev_timestamp = int(battery_counters[i - 1]["timestampNs"])
+        curr_timestamp = int(battery_counters[i]["timestampNs"])
+        list_current_ua.append(- int(battery_counters[i]["currentUa"]))
+        delta_s = (curr_timestamp - prev_timestamp) / 1e9
+        deltas.append(delta_s)
+
+
+    num = 0
+    den = 0
+    for i in range(len(deltas)):
+        num += list_current_ua[i] * int(deltas[i])
+        den += int(deltas[i])
+
+    battery_avg_discharge_ua_s = num / den
+    print(battery_avg_discharge_ua_s)
+
+    return battery_avg_discharge_ua_s
+
 """
 parse_file : Parse the trace file and extract the relevant data
 
@@ -200,15 +233,17 @@ def parse_file(filename):
     # Parse Battery metrics
     ad_battery_metrics = tp.metric(['android_batt'])
     battery_dict = MessageToDict(ad_battery_metrics)
+    battery_avg_discharge_rate = average_discharge_rate(battery_dict['androidBatt'])
+
     battery_start = battery_dict['androidBatt']['batteryCounters'][0]['chargeCounterUah']
     battery_end = battery_dict['androidBatt']['batteryCounters'][-1]['chargeCounterUah']
-    battery_discharge = battery_end - battery_start
+    battery_discharge_total = battery_end - battery_start
 
     # Parse mem metrics
     ad_netperf_metrics = tp.metric(['android_io'])
 
 
-    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge #Rounded for comprehension
+    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate #Rounded for comprehension
 
 """
 result_to_csv : Write the data to a CSV file
@@ -222,37 +257,38 @@ def result_to_csv(data):
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow((
                                 'Trace;'
-                             'L21S_VDD2L_MEM_ENERGY_AVG;'
-                             'UFS(Disk)_ENERGY_AVG;'
-                             'S12S_VDD_AUR_ENERGY_AVG;'
-                             'Camera_ENERGY_AVG;'
-                             'GPU3D_ENERGY_AVG;'
-                             'Sensor_ENERGY_AVG;'
-                             'Memory_ENERGY_AVG;'
-                             'Memory_ENERGY_AVG;'
-                             'Display_ENERGY_AVG;'
-                             'GPS_ENERGY_AVG;'
-                             'GPU_ENERGY_AVG;'
-                             'WLANBT_ENERGY_AVG;'
-                             'L22M_DISP_ENERGY_AVG;'
-                             'S6M_LLDO1_ENERGY_AVG;'
-                             'S8M_LLDO2_ENERGY_AVG;'
-                             'S9M_VDD_CPUCL0_M_ENERGY_AVG;'
-                             'CPU_BIG_ENERGY_AVG;'
-                             'CPU_LITTLE_ENERGY_AVG;'
-                             'CPU_MID_ENERGY_AVG;'
-                             'INFRASTRUCTURE_ENERGY_AVG;'
-                             'CELLULAR_ENERGY_AVG;'
-                             'CELLULAR_ENERGY_AVG;'
-                             'INFRASTRUCTURE_ENERGY_AVG;'
-                             'TPU_ENERGY_AVG;'
+                             'L21S_VDD2L_MEM_ENERGY_AVG_UWS;'
+                             'UFS(Disk)_ENERGY_AVG_UWS;'
+                             'S12S_VDD_AUR_ENERGY_AVG_UWS;'
+                             'Camera_ENERGY_AVG_UWS;'
+                             'GPU3D_ENERGY_AVG_UWS;'
+                             'Sensor_ENERGY_AVG_UWS;'
+                             'Memory_ENERGY_AVG_UWS;'
+                             'Memory_ENERGY_AVG_UWS;'
+                             'Display_ENERGY_AVG_UWS;'
+                             'GPS_ENERGY_AVG_UWS;'
+                             'GPU_ENERGY_AVG_UWS;'
+                             'WLANBT_ENERGY_AVG_UWS;'
+                             'L22M_DISP_ENERGY_AVG_UWS;'
+                             'S6M_LLDO1_ENERGY_AVG_UWS;'
+                             'S8M_LLDO2_ENERGY_AVG_UWS;'
+                             'S9M_VDD_CPUCL0_M_ENERGY_AVG_UWS;'
+                             'CPU_BIG_ENERGY_AVG_UWS;'
+                             'CPU_LITTLE_ENERGY_AVG_UWS;'
+                             'CPU_MID_ENERGY_AVG_UWS;'
+                             'INFRASTRUCTURE_ENERGY_AVG_UWS;'
+                             'CELLULAR_ENERGY_AVG_UWS;'
+                             'CELLULAR_ENERGY_AVG_UWS;'
+                             'INFRASTRUCTURE_ENERGY_AVG_UWS;'
+                             'TPU_ENERGY_AVG_UWS;'
                              'CPU_LITTLE_FREQ;'
                              'CPU_MID_FREQ;'
                              'CPU_BIG_FREQ;'
                              'GPU0_FREQ;'
                              'GPU_1FREQ;'
                              'GPU_MEM_AVG;'
-                             'BATTERY_DISCHARGE'
+                             'BATTERY_DISCHARGE_TOTAL_UA;'
+                             'BATTERY_DISCHARGE_RATE_UAS;'
                              ).split(';'))
         for elt in data:
             spamwriter.writerow(elt)
@@ -280,7 +316,6 @@ def process_result(trace_name, data, power_rails_slice):
         size = len(elt["delta_list"])
         start = int((x / 100) * size)
         end = int((y / 100) * size)
-        print(elt)
         for i in range(start, end-1):
             num += int(elt["delta_list"][i]) * int(elt["delta_time"][i])
             den += int(elt["delta_time"][i])
