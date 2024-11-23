@@ -252,10 +252,7 @@ Parameters:
     data : List of data to write to the CSV file
 """
 def result_to_csv(data):
-    with open('./out/out.csv', 'a', newline='') as csvfile:
-        spamwriter = csv.writer(csvfile, delimiter=';',
-                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        spamwriter.writerow((
+    first_line = (
                                 'Trace;'
                              'L21S_VDD2L_MEM_ENERGY_AVG_UWS;'
                              'UFS(Disk)_ENERGY_AVG_UWS;'
@@ -289,7 +286,12 @@ def result_to_csv(data):
                              'GPU_MEM_AVG;'
                              'BATTERY_DISCHARGE_TOTAL_UA;'
                              'BATTERY_DISCHARGE_RATE_UAS;'
-                             ).split(';'))
+                             ).split(';')
+    first_line.pop()
+    with open('./out/out.csv', 'a', newline='') as csvfile:
+        spamwriter = csv.writer(csvfile, delimiter=';',
+                                quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        spamwriter.writerow(first_line)
         for elt in data:
             spamwriter.writerow(elt)
 
@@ -372,3 +374,4 @@ def main(args):
 
 if __name__ == '__main__':
     main(sys.argv[1:])
+
