@@ -128,7 +128,6 @@ def average_discharge_rate(battery_data):
         den += int(deltas[i])
 
     battery_avg_discharge_ua_s = num / den
-    print(battery_avg_discharge_ua_s)
 
     return battery_avg_discharge_ua_s
 
@@ -240,7 +239,8 @@ def parse_file(filename):
     battery_discharge_total = battery_end - battery_start
 
     # Parse mem metrics
-    ad_netperf_metrics = tp.metric(['android_io'])
+    ad_netperf_metrics = tp.metric(['android_mem'])
+    print(ad_netperf_metrics)
 
 
     return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate #Rounded for comprehension
