@@ -241,11 +241,39 @@ def parse_file(filename):
 
     # Parse network packets
     total_data = 0
-    qr_it = tp.query('SELECT name, type, packet_length, direction FROM __intrinsic_android_network_packets WHERE type = "__intrinsic_android_network_packets"')
-    for row in qr_it:
+    qr_network = tp.query(
+        'SELECT name, type, packet_length, direction '
+        'FROM __intrinsic_android_network_packets '
+        'WHERE type = "__intrinsic_android_network_packets"'
+    )
+
+    for row in qr_network:
         total_data += int(row.packet_length)
 
-    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data #Rounded for comprehension
+    # Parse temp data
+    list_temp = []
+    avg_temp = 0
+    idx = 0
+    qr_temp = tp.query(
+        'SELECT name, value '
+        'FROM counter_track '
+        'JOIN counter ON counter_track.id = counter.track_id '
+        'WHERE name = "soc_therm Temperature" '
+    )
+    for row in qr_temp:
+        list_temp.append(row.value)
+        avg_temp += int(row.value)
+        idx += 1
+
+    if idx > 0:
+        avg_temp /= idx
+
+    if len(list_temp) > 1:
+        diff_temp = int(list_temp[-1]) - int(list_temp[0])
+    else:
+        diff_temp = 0
+
+    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data, avg_temp, diff_temp #Rounded for comprehension
 
 """
 result_to_csv : Write the data to a CSV file
@@ -289,6 +317,8 @@ def result_to_csv(data):
                              'BATTERY_DISCHARGE_TOTAL_UA;'
                              'BATTERY_DISCHARGE_RATE_UAS;'
                              'TOTAL_DATA_WIFI_BYTES;'
+                             'AVG_SOC_TEMP;'
+                             'DIFF_SOC_TEMP;'
                              ).split(';')
     first_line.pop()
     with open('./out/out.csv', 'a', newline='') as csvfile:
