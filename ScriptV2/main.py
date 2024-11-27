@@ -3,6 +3,7 @@ import csv
 import os
 import sys
 import re
+from multiprocessing import Pool
 
 from perfetto.trace_processor import TraceProcessor
 from google.protobuf.json_format import MessageToDict
@@ -228,17 +229,17 @@ def parse_file(filename):
     if res[0] == 0:
         cpu_little_freq = 'err'
     else:
-        cpu_little_freq = res[0]
+        cpu_little_freq = int(res[0])
 
     if res[1] == 0:
         cpu_medium_freq = 'err'
     else:
-        cpu_medium_freq = res[1]
+        cpu_medium_freq = int(res[1])
 
     if res[2] == 0:
         cpu_big_freq = 'err'
     else:
-        cpu_big_freq = res[2]
+        cpu_big_freq = int(res[2])
 
 
     # Parse Battery metrics
@@ -289,7 +290,7 @@ def parse_file(filename):
     else:
         diff_temp = 0
 
-    return rails_data, int(cpu_little_freq), int(cpu_medium_freq), int(cpu_big_freq), gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data, avg_temp, diff_temp, battery_discharge_total_percent #Rounded for comprehension
+    return rails_data, cpu_little_freq, cpu_medium_freq, cpu_big_freq, gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data, avg_temp, diff_temp, battery_discharge_total_percent #Rounded for comprehension
 
 """
 result_to_csv : Write the data to a CSV file
@@ -401,6 +402,28 @@ def slice_validation(value):
             print('slice format : [x:y] with 0 < x < 100 and 0 < y < 100 and x < y')
     return res
 
+"""
+process_file : Process a trace file
+
+Parameters:
+    filename_and_slice : Tuple containing the filename and the power rail slice
+    
+Returns:
+    process_result : Result of the process or None if an error occurred
+"""
+
+
+def process_file(filename_and_slice):
+    filename, power_rails_slice = filename_and_slice
+    trace_name = re.split(r' |/|\\', filename)[2][:-15]
+    try:
+        print(f"Processing {trace_name}")
+        data = parse_file(filename)
+        return process_result(trace_name, data, power_rails_slice)
+    except Exception as e:
+        print(f"Error processing {trace_name}: {e}")
+        return None
+
 
 def main(args):
     if not slice_validation(args[0]):
@@ -414,13 +437,16 @@ def main(args):
         sys.exit(0)
 
     open('./out/out.csv', 'w').close()
-    data = []
 
-    for elt in filenames:
-        formatted_data = process_result(re.split(r' |/|\\',elt)[2][:-15], parse_file(elt), args[0])
-        data.append(formatted_data)
+    with Pool() as pool:
+        results = pool.map(process_file, [(filename, args[0]) for filename in filenames])
 
-    result_to_csv(data)
+    valid_results = [result for result in results if result is not None]
+
+    if valid_results:
+        result_to_csv(valid_results)
+    else:
+        print("No valid results to write.")
 
 if __name__ == '__main__':
     main(sys.argv[1:])
