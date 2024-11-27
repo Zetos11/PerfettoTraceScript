@@ -252,9 +252,7 @@ def parse_file(filename):
     battery_end = battery_dict['androidBatt']['batteryCounters'][-1]['chargeCounterUah']
     battery_discharge_total = battery_end - battery_start
 
-    battery_start_percent = battery_dict['androidBatt']['batteryCounters'][0]['capacityPercent']
-    battery_end_percent = battery_dict['androidBatt']['batteryCounters'][-1]['capacityPercent']
-    battery_discharge_total_percent = battery_end_percent - battery_start_percent
+    battery_percent = battery_dict['androidBatt']['batteryCounters'][-1]['capacityPercent']
 
 
     # Parse network packets
@@ -291,7 +289,7 @@ def parse_file(filename):
     else:
         diff_temp = 0
 
-    return rails_data, cpu_little_freq, cpu_medium_freq, cpu_big_freq, gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data, avg_temp, diff_temp, battery_discharge_total_percent #Rounded for comprehension
+    return rails_data, cpu_little_freq, cpu_medium_freq, cpu_big_freq, gpu0_freq, gpu1_freq, gpu_mem_avg, battery_discharge_total, battery_avg_discharge_rate, total_data, avg_temp, diff_temp, battery_percent #Rounded for comprehension
 
 """
 result_to_csv : Write the data to a CSV file
@@ -337,7 +335,7 @@ def result_to_csv(data):
                              'TOTAL_DATA_WIFI_BYTES;'
                              'AVG_SOC_TEMP;'
                              'DIFF_SOC_TEMP;'
-                             'BATTERY_DISCHARGE_TOTAL_PERCENT;'
+                             'BATTERY__PERCENT;'
                              ).split(';')
     first_line.pop()
     with open('./out/out.csv', 'a', newline='') as csvfile:
