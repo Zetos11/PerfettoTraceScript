@@ -225,9 +225,21 @@ def parse_file(filename):
 
     # Calculate average cpu frequency
     res =  cpu_freq_compilation(freq_tab)
-    cpu_little_freq = res[0]
-    cpu_medium_freq = res[1]
-    cpu_big_freq = res[2]
+    if res[0] == 0:
+        cpu_little_freq = 'err'
+    else:
+        cpu_little_freq = res[0]
+
+    if res[1] == 0:
+        cpu_medium_freq = 'err'
+    else:
+        cpu_medium_freq = res[1]
+
+    if res[2] == 0:
+        cpu_big_freq = 'err'
+    else:
+        cpu_big_freq = res[2]
+
 
     # Parse Battery metrics
     ad_battery_metrics = tp.metric(['android_batt'])
