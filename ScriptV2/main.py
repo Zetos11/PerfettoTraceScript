@@ -15,12 +15,13 @@ Returns:
     filenames : List of all the trace files
 """
 def load_input_filename():
-    filenames = []
+    filenames = ([],[])
     for root, _, files in os.walk('./in'):
         for filename in files:
             if filename.endswith('.perfetto-trace'):
+                filenames[1].append(filename)
                 file_path = os.path.join(root, filename)
-                filenames.append(file_path)
+                filenames[0].append(file_path)
     return filenames
 
 """
@@ -358,7 +359,7 @@ Returns:
     line_elements : List of elements to write to the CSV file
 """
 def process_result(trace_name, data, power_rails_slice):
-    line_elements = [trace_name]
+    line_elements = [trace_name[:-15]]
     pattern = r"^\[(\d+):(\d+)\]$"
     match = re.match(pattern, power_rails_slice)
     x, y = map(int, match.groups())
@@ -414,8 +415,7 @@ Returns:
 
 
 def process_file(filename_and_slice):
-    filename, power_rails_slice = filename_and_slice
-    trace_name = re.split(r' |/|\\', filename)[2][:-15]
+    filename, power_rails_slice, trace_name = filename_and_slice
     try:
         print(f"Processing {trace_name}")
         data = parse_file(filename)
@@ -432,14 +432,14 @@ def main(args):
 
     filenames = load_input_filename()
 
-    if len(filenames) == 0:
+    if len(filenames[0]) == 0:
         print("No trace file found")
         sys.exit(0)
 
     open('./out/out.csv', 'w').close()
 
     with Pool() as pool:
-        results = pool.map(process_file, [(filename, args[0]) for filename in filenames])
+        results = pool.map(process_file, [(filenames[0][i], args[0], filenames[1][i]) for i in range(len(filenames[0]))])
 
     valid_results = [result for result in results if result is not None]
 
