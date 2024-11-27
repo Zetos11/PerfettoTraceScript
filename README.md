@@ -15,7 +15,12 @@ So far the metrics tracked are :
 - Frequency of the first GPU
 - Frequency of the second GPU
 - Average GPU memory frequency
-- Battery discharge
+- Battery discharge total
+- Battery discharge rate
+- Total Data WIFI IN/OUT
+- Average SOC temperature
+- Difference SOC temperature
+- Battery discharge percent
 
 Traces have to be inside the *in* folder and the output will be inside the *out* folder, in the out.csv file.
 Supported traces format are :
