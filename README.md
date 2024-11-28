@@ -42,7 +42,7 @@ cd ScriptV2
 python3 main.py --in ./my_input_dir --out ./my_output.csv --slice [25:75]   
 ```
 
-Option :
+Options :
 
 *--in* : Can be used to specify the input director from where traces will be loaded for analysis
 
