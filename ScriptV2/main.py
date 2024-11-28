@@ -338,6 +338,30 @@ def result_to_csv(data, output):
                              'AVG_SOC_TEMP;'
                              'DIFF_SOC_TEMP;'
                              'BATTERY__PERCENT;'
+                            'L21S_VDD2L_MEM_ENERGY_UW;'
+                            'UFS(Disk)_ENERGY_UW;'
+                            'S12S_VDD_AUR_ENERGY_UW;'
+                            'Camera_ENERGY_UW;'
+                            'GPU3D_ENERGY_UW;'
+                            'Sensor_ENERGY_UW;'
+                            'Memory_ENERGY_UW;'
+                            'Memory_ENERGY_UW;'
+                            'Display_ENERGY_UW;'
+                            'GPS_ENERGY_UW;'
+                            'GPU_ENERGY_UW;'
+                            'WLANBT_ENERGY_UW;'
+                            'L22M_DISP_ENERGY_UW;'
+                            'S6M_LLDO1_ENERGY_UW;'
+                            'S8M_LLDO2_ENERGY_UW;'
+                            'S9M_VDD_CPUCL0_M_ENERGY_UW;'
+                            'CPU_BIG_ENERGY_UW;'
+                            'CPU_LITTLE_ENERGY_UW;'
+                            'CPU_MID_ENERGY_UW;'
+                            'INFRASTRUCTURE_ENERGY_UW;'
+                            'CELLULAR_ENERGY_UW;'
+                            'CELLULAR_ENERGY_UW;'
+                            'INFRASTRUCTURE_ENERGY_UW;'
+                            'TPU_ENERGY_UW;'
                              ).split(';')
     first_line.pop()
     with open(output, 'a', newline='') as csvfile:
@@ -380,6 +404,10 @@ def process_result(trace_name, data, power_rails_slice):
 
     for elt in data[1:]:
         line_elements.append(str(elt))
+
+    for elt in data[0]:
+        line_elements.append(str(elt["total_energy"]))
+
     return line_elements
 
 """
