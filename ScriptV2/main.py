@@ -1,4 +1,5 @@
 # Noé Chachignot, INRIA, 2024
+import argparse
 import csv
 import os
 import sys
@@ -14,11 +15,11 @@ load_input_filename : Load all the trace files in the in directory
 Returns:
     filenames : List of all the trace files
 """
-def load_input_filename():
+def load_input_filename(directory):
     filenames = ([],[])
-    for root, _, files in os.walk('./in'):
+    for root, _, files in os.walk(directory):
         for filename in files:
-            if filename.endswith('.perfetto-trace'):
+            if filename.endswith('.perfetto-trace') or filename.endswith('.proto'):
                 filenames[1].append(filename)
                 file_path = os.path.join(root, filename)
                 filenames[0].append(file_path)
@@ -297,7 +298,8 @@ result_to_csv : Write the data to a CSV file
 Parameters:
     data : List of data to write to the CSV file
 """
-def result_to_csv(data):
+def result_to_csv(data, output):
+    open(output, 'w').close()
     first_line = (
                                 'Trace;'
                              'L21S_VDD2L_MEM_ENERGY_AVG_UWS;'
@@ -338,7 +340,7 @@ def result_to_csv(data):
                              'BATTERY__PERCENT;'
                              ).split(';')
     first_line.pop()
-    with open('./out/out.csv', 'a', newline='') as csvfile:
+    with open(output, 'a', newline='') as csvfile:
         spamwriter = csv.writer(csvfile, delimiter=';',
                                 quotechar='|', quoting=csv.QUOTE_MINIMAL)
         spamwriter.writerow(first_line)
@@ -423,29 +425,46 @@ def process_file(filename_and_slice):
         return None
 
 
-def main(args):
-    if not slice_validation(args[0]):
-        print("Usage: python3 main.py power_rails_slice (format : [0:100])")
+def main():
+    slice_powerails = "[0:100]"
+    dir_input = "./in"
+    output = "./out/out.csv"
+
+    parser = argparse.ArgumentParser(description="Optionnal parameter.")
+
+    parser.add_argument("--slice", type=str, help="Slice of the power rails to consider", required=False)
+    parser.add_argument("--input", type=str, help="Trace directory", required=False)
+    parser.add_argument("--out", type=str, help="CSV for the result", required=False)
+
+    args = parser.parse_args()
+
+    if args.slice:
+        slice_powerails = args.slice
+    if args.input:
+        dir_input = args.input
+    if args.out:
+        output = args.out
+
+    if not slice_validation(slice_powerails):
+        print("Usage: python3 main.py --slice (format : [0:100])")
         sys.exit(0)
 
-    filenames = load_input_filename()
+    filenames = load_input_filename(dir_input)
 
     if len(filenames[0]) == 0:
         print("No trace file found")
         sys.exit(0)
 
-    open('./out/out.csv', 'w').close()
-
     with Pool() as pool:
-        results = pool.map(process_file, [(filenames[0][i], args[0], filenames[1][i]) for i in range(len(filenames[0]))])
+        results = pool.map(process_file, [(filenames[0][i], slice_powerails, filenames[1][i]) for i in range(len(filenames[0]))])
 
     valid_results = [result for result in results if result is not None]
 
     if valid_results:
-        result_to_csv(valid_results)
+        result_to_csv(valid_results, output)
     else:
         print("No valid results to write.")
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
 
