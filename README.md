@@ -46,7 +46,8 @@ Option :
 
 *--in* : Can be used to specify the input director from where traces will be loaded for analysis
 
-*--out* : Can be used to specify a CSV for the results. 
+*--out* : Can be used to specify a CSV for the results. If the CSV cannot be found, it will be created.
+
 **WARNING** The CSV you used will be EMPTIED at the beginning of the analysis
 
 *--slice* : Can be used to specify the range of the trace to analyze **FOR THE POWER RAILS ONLY**. 
