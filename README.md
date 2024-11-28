@@ -20,20 +20,36 @@ So far the metrics tracked are :
 - Total Data WIFI IN/OUT
 - Average SOC temperature
 - Difference SOC temperature
-- Battery discharge percent
+- Battery percent
 
-Traces have to be inside the *in* folder and the output will be inside the *out* folder, in the out.csv file.
 Supported traces format are :
 - perfetto-trace
 - proto
 
-Usage : 
+The default input directory is './in', the default CSV output is './out/out.csv' and the default slice is [0:100]
+
+### Usage : 
+
+Default usage example
 ```bash
 cd ScriptV2
-python3 main.py power_rails_slice       
+python3 main.py       
 ```
 
-power_rails_slice is mandatory, it's used to specify the range of the trace to analyze **FOR THE POWER RAILS ONLY**. 
+Usage example with options
+```bash
+cd ScriptV2
+python3 main.py --in ./my_input_dir --out ./my_output.csv --slice [25:75]   
+```
+
+Option :
+
+*--in* : Can be used to specify the input director from where traces will be loaded for analysis
+
+*--out* : Can be used to specify a CSV for the results. 
+**WARNING** The CSV you used will be EMPTIED at the beginning of the analysis
+
+*--slice* : Can be used to specify the range of the trace to analyze **FOR THE POWER RAILS ONLY**. 
 No matter what the slice given is, other traced metrics will be for the entire trace.
 
 The slice format is as follows 
