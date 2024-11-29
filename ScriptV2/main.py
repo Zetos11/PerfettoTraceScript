@@ -9,6 +9,11 @@ from multiprocessing import Pool
 from perfetto.trace_processor import TraceProcessor
 from google.protobuf.json_format import MessageToDict
 
+
+cpu_core_speeds_cluster0=[324000.0, 615000.0, 820000.0, 975000.0, 1098000.0, 1197000.0, 1328000.0, 1475000.0, 1548000.0, 1704000.0, 1844000.0, 1950000.0, 2024000.0, 2098000.0, 2147000.0]
+cpu_core_speeds_cluster1=[402000.0, 578000.0, 697000.0, 721000.0, 910000.0, 1082000.0, 1221000.0, 1328000.0, 1418000.0, 1549000.0, 1622000.0, 1836000.0, 1999000.0, 2130000.0, 2245000.0, 2352000.0, 2450000.0]
+cpu_core_speeds_cluster2=[500000.0, 893000.0, 1164000.0, 1328000.0, 1557000.0, 1745000.0, 1852000.0, 1901000.0, 2049000.0, 2147000.0, 2294000.0, 2409000.0, 2556000.0, 2687000.0, 2802000.0, 2914000.0, 3015000.0]
+
 """
 load_input_filename : Load all the trace files in the in directory
 
@@ -51,28 +56,32 @@ cpu_freq_compilation : Calculate the average frequency for each CPU group
 
 Parameters:
     freq_tab : Dictionary containing the frequency data for each CPU group
+    trace_duration_ns : Duration of the trace
     
 Returns:
     little : Average frequency for the little CPU group
     medium : Average frequency for the medium CPU group (big in the trace)
     big : Average frequency for the big CPU group (bigger in the trace)
 """
-def cpu_freq_compilation(freq_tab):
+def cpu_freq_compilation(freq_tab, trace_duration_ns):
     little = 0
     medium = 0
     big = 0
     for key in freq_tab:
         num = 0
-        den = 0
+        total_time = 0
         for elt in freq_tab[key]:
+            total_time += int(elt[1])
             num += int(elt[0])*int(elt[1])
-            den += int(elt[1])
         if key == "Little":
-            little = num / den
+            num += cpu_core_speeds_cluster0[0] * (int(trace_duration_ns) - total_time)
+            little = num / int(trace_duration_ns)
         if key == "Medium":
-            medium = num / den
+            num += cpu_core_speeds_cluster1[0] * (int(trace_duration_ns) - total_time)
+            medium = num / int(trace_duration_ns)
         if key == "Big":
-            big = num / den
+            num += cpu_core_speeds_cluster2[0] * (int(trace_duration_ns) - total_time)
+            big = num / int(trace_duration_ns)
     return little, medium, big
 
 """
@@ -163,6 +172,10 @@ def parse_file(filename):
 
     tp = TraceProcessor(trace=filename)
 
+    metadata_metrics = tp.metric(['trace_metadata'])
+    metadata_metrics_dict = MessageToDict(metadata_metrics)
+    trace_duration_ns = metadata_metrics_dict['traceMetadata']['traceDurationNs']
+
     # Parse GPU metrics
     ad_gpu_metrics = tp.metric(['android_gpu'])
     gpu_idx = 0
@@ -227,18 +240,18 @@ def parse_file(filename):
                 ])
 
     # Calculate average cpu frequency
-    res =  cpu_freq_compilation(freq_tab)
-    if res[0] == 0:
+    res =  cpu_freq_compilation(freq_tab, trace_duration_ns)
+    if res[0] <= 0:
         cpu_little_freq = 'err'
     else:
         cpu_little_freq = int(res[0])
 
-    if res[1] == 0:
+    if res[1] <= 0:
         cpu_medium_freq = 'err'
     else:
         cpu_medium_freq = int(res[1])
 
-    if res[2] == 0:
+    if res[2] <= 0:
         cpu_big_freq = 'err'
     else:
         cpu_big_freq = int(res[2])
