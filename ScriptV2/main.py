@@ -48,7 +48,8 @@ def create_rail_entry(name, energy_list, time_list):
         "energy_list": energy_list,
         "time_list": time_list,
         "delta_list": [],
-        "delta_time": []
+        "delta_time": [],
+        "battery_poll_s": 0
     }
 
 """
@@ -172,9 +173,20 @@ def parse_file(filename):
 
     tp = TraceProcessor(trace=filename)
 
+
+    #Parse trace metadata
     metadata_metrics = tp.metric(['trace_metadata'])
     metadata_metrics_dict = MessageToDict(metadata_metrics)
+    traceConfigPbtxt = metadata_metrics_dict['traceMetadata']['traceConfigPbtxt']
     trace_duration_ns = metadata_metrics_dict['traceMetadata']['traceDurationNs']
+
+    pattern = r"battery_poll_ms:\s*(\d+)"
+    result = re.search(pattern, traceConfigPbtxt)
+
+    if result:
+        battery_poll_s =  int(result.group(1))/1000
+    else:
+        battery_poll_s = 1
 
     # Parse GPU metrics
     ad_gpu_metrics = tp.metric(['android_gpu'])
@@ -208,6 +220,7 @@ def parse_file(filename):
         i["delta_time"] = res[2]
         i["total_time_ms"] = res[3]
         i["delta_list"].pop(0)
+        i["battery_poll_s"] = battery_poll_s
 
 
     # Parse CPU metrics
@@ -406,7 +419,7 @@ def process_result(trace_name, data, power_rails_slice):
             num += int(elt["delta_list"][i]) * int(elt["delta_time"][i])
             den += int(elt["delta_time"][i])
         if not den == 0:
-            line_elements.append(str(num/den))
+            line_elements.append(str(num/den/elt["battery_poll_s"]))
         else :
             line_elements.append("0")
 
