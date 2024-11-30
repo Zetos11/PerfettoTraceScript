@@ -178,21 +178,16 @@ def parse_file(filename):
 
     # Parse GPU metrics
     ad_gpu_metrics = tp.metric(['android_gpu'])
-    gpu_idx = 0
-    open('./out/tmp', 'w').close()
-    with open('./out/tmp', 'w') as f:
-        print(ad_gpu_metrics, file=f)
-    with open('./out/tmp', 'r') as f:
-        lines = f.readlines()
-        for i in range(len(lines)):
-            if "freq_metrics" in lines[i]:
-                if "freq_avg" in lines[i+4]:
-                    if gpu_idx == 0:
-                        gpu0_freq = int(float(lines[i+4].split(":")[1][1:-2]))
-                        gpu_mem_avg = int(lines[i-1].split(":")[1][1:-1])
-                    else:
-                        gpu1_freq = int(float(lines[i+4].split(":")[1][1:-2]))
-                    gpu_idx += 1
+    gpu_dict = MessageToDict(ad_gpu_metrics)
+
+    for elt in gpu_dict['androidGpu']['freqMetrics']:
+        if elt['gpuId'] == 0:
+            gpu0_freq = int(float(elt['freqAvg']))
+
+        if elt['gpuId'] == 1:
+            gpu1_freq = int(float(elt['freqAvg']))
+
+    gpu_mem_avg = int(gpu_dict['androidGpu']['memAvg'])
 
     # Parse power rails
     ad_power_rails_metrics = tp.metric(['android_powrails'])
