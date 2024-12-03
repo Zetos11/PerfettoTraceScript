@@ -32,13 +32,13 @@ The default input directory is './in', the default CSV output is './out/out.csv'
 
 Default usage example
 ```bash
-cd ScriptV2
+cd Script
 python3 main.py       
 ```
 
 Usage example with options
 ```bash
-cd ScriptV2
+cd Script
 python3 main.py --in ./my_input_dir --out ./my_output.csv --slice [25:75]   
 ```
 
