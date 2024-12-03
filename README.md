@@ -2,10 +2,7 @@
 
 Can be used to extract specific data from a perfetto trace file.
 
-The most recent version, ScriptV2, uses the perfetto python API to extract the data from the trace.
-ScriptV2 is way more compact and efficient than the previous version and should always be used.
-
-**ScriptV1 is deprecated and is just here for references.**
+The script uses the perfetto python API to extract the data from the trace.
 
 So far the metrics tracked are : 
 - Power rails data
