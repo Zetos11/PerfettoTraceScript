@@ -1,4 +1,4 @@
-# XXXX XXXX, XXXX, 2024
+# Noé CHACHIGNOT, Inria, 2024
 import argparse
 import csv
 import os
